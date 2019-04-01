@@ -1,4 +1,7 @@
-﻿namespace FunctionsCustomSercuity.Binding
+﻿using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
+
+namespace FunctionsCustomSercuity.Binding
 {
     using System;
     using System.Threading.Tasks;
@@ -11,17 +14,23 @@
     /// </summary>
     public class AccessTokenBinding : IBinding
     {
+        private readonly List<SecurityKey> _keys;
+
+        public AccessTokenBinding(List<SecurityKey> keys)
+        {
+            _keys = keys;
+        }
+
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             // Get the HTTP request
             var request = context.BindingData["req"] as DefaultHttpRequest;
 
             // Get the configuration files for the OAuth token issuer
-            var issuerToken = Environment.GetEnvironmentVariable("IssuerToken");
             var audience = Environment.GetEnvironmentVariable("Audience");
             var issuer = Environment.GetEnvironmentVariable("Issuer");
 
-            return Task.FromResult<IValueProvider>(new AccessTokenValueProvider(request, issuerToken, audience, issuer));
+            return Task.FromResult<IValueProvider>(new AccessTokenValueProvider(request, _keys, audience, issuer));
         }
 
         public bool FromAttribute => true;

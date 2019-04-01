@@ -1,4 +1,6 @@
-﻿namespace FunctionsCustomSercuity.Binding
+﻿using System.Collections.Generic;
+
+namespace FunctionsCustomSercuity.Binding
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;
@@ -19,14 +21,14 @@
         private const string AUTH_HEADER_NAME = "Authorization";
         private const string BEARER_PREFIX = "Bearer ";
         private HttpRequest _request;
-        private readonly string _issuerToken;
+        private readonly IEnumerable<SecurityKey> _signingKeys;
         private readonly string _audience;
         private readonly string _issuer;
 
-        public AccessTokenValueProvider(HttpRequest request, string issuerToken, string audience, string issuer)
+        public AccessTokenValueProvider(HttpRequest request, IEnumerable<SecurityKey> signingKeys, string audience, string issuer)
         {
             _request = request;
-            _issuerToken = issuerToken;
+            _signingKeys = signingKeys;
             _audience = audience;
             _issuer = issuer;
         }
@@ -49,7 +51,7 @@
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_issuerToken))
+                    IssuerSigningKeys = _signingKeys
                 };
 
                 // Validate the token

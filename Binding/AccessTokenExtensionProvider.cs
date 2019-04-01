@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Net.Http;
+using Microsoft.Azure.WebJobs.Host.Config;
 
-namespace FunctionsCustomSercuity.Binding
+namespace FunctionsCustomSecurity.OpenIdConnect.Binding
 {
-    using Microsoft.Azure.WebJobs.Host.Config;
-
     /// <summary>
     /// Wires up the attribute to the custom binding.
     /// </summary>

@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.Azure.WebJobs.Host.Bindings;
+using Microsoft.Azure.WebJobs.Host.Protocols;
 using Microsoft.IdentityModel.Tokens;
 
-namespace FunctionsCustomSercuity.Binding
+namespace FunctionsCustomSecurity.OpenIdConnect.Binding
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http.Internal;
-    using Microsoft.Azure.WebJobs.Host.Bindings;
-    using Microsoft.Azure.WebJobs.Host.Protocols;
-
     /// <summary>
     /// Runs on every request and passes the function context (e.g. Http request and host configuration) to a value provider.
     /// </summary>

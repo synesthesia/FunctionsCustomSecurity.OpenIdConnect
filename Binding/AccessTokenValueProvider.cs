@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs.Host.Bindings;
+using Microsoft.IdentityModel.Tokens;
 
-namespace FunctionsCustomSercuity.Binding
+namespace FunctionsCustomSecurity.OpenIdConnect.Binding
 {
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Azure.WebJobs.Host.Bindings;
-    using Microsoft.IdentityModel.Tokens;
-
     /// <summary>
     /// Creates a <see cref="ClaimsPrincipal"/> instance for the supplied header and configuration values.
     /// </summary>

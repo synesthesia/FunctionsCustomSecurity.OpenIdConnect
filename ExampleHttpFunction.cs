@@ -1,16 +1,13 @@
-using System;
-using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using FunctionsCustomSecurity.OpenIdConnect.Binding;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using FunctionsCustomSercuity.Binding;
-using System.Security.Claims;
 
-namespace FunctionsCustomSercuity
+namespace FunctionsCustomSecurity.OpenIdConnect
 {
     public static class ExampleHttpFunction
     {

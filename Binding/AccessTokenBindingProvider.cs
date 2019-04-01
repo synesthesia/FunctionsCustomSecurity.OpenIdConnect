@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using IdentityModel;
 using IdentityModel.Client;
+using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.IdentityModel.Tokens;
 
-namespace FunctionsCustomSercuity.Binding
+namespace FunctionsCustomSecurity.OpenIdConnect.Binding
 {
-    using System.Threading.Tasks;
-    using Microsoft.Azure.WebJobs.Host.Bindings;
-
     /// <summary>
     /// Provides a new binding instance for the function host.
     /// </summary>

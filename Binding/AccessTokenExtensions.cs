@@ -1,8 +1,8 @@
-﻿namespace FunctionsCustomSercuity.Binding
-{
-    using System;
-    using Microsoft.Azure.WebJobs;
+﻿using System;
+using Microsoft.Azure.WebJobs;
 
+namespace FunctionsCustomSecurity.OpenIdConnect.Binding
+{
     /// <summary>
     /// Called from Startup to load the custom binding when the Azure Functions host starts up.
     /// </summary>

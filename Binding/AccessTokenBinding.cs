@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Azure.WebJobs.Host.Bindings;
@@ -14,10 +15,14 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
     public class AccessTokenBinding : IBinding
     {
         private readonly List<SecurityKey> _keys;
+        private readonly string _userInfoEndPoint;
+        private readonly HttpClient _client;
 
-        public AccessTokenBinding(List<SecurityKey> keys)
+        public AccessTokenBinding(List<SecurityKey> keys, string userInfoEndPoint, HttpClient client)
         {
             _keys = keys;
+            _userInfoEndPoint = userInfoEndPoint;
+            _client = client;
         }
 
         public Task<IValueProvider> BindAsync(BindingContext context)
@@ -29,7 +34,7 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
             var audience = Environment.GetEnvironmentVariable("Audience");
             var issuer = Environment.GetEnvironmentVariable("Issuer");
 
-            return Task.FromResult<IValueProvider>(new AccessTokenValueProvider(request, _keys, audience, issuer));
+            return Task.FromResult<IValueProvider>(new AccessTokenValueProvider(request, _keys, audience, issuer, _client, _userInfoEndPoint));
         }
 
         public bool FromAttribute => true;

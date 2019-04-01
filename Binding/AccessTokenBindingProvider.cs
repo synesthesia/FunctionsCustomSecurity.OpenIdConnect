@@ -32,7 +32,7 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
                 select new RsaSecurityKey(new RSAParameters {Exponent = e, Modulus = n}) {KeyId = webKey.Kid})
                 .Cast<SecurityKey>().ToList();
 
-            IBinding binding = new AccessTokenBinding(keys);
+            IBinding binding = new AccessTokenBinding(keys, disco.UserInfoEndpoint, _client);
             return binding;
         }
     }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.IdentityModel.Tokens;
@@ -23,16 +26,21 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
         private readonly IEnumerable<SecurityKey> _signingKeys;
         private readonly string _audience;
         private readonly string _issuer;
+        private readonly HttpClient _client;
+        private readonly string _userInfoEndPoint;
 
-        public AccessTokenValueProvider(HttpRequest request, IEnumerable<SecurityKey> signingKeys, string audience, string issuer)
+        public AccessTokenValueProvider(HttpRequest request, IEnumerable<SecurityKey> signingKeys, string audience,
+            string issuer, HttpClient client, string userInfoEndPoint)
         {
             _request = request;
             _signingKeys = signingKeys;
             _audience = audience;
             _issuer = issuer;
+            _client = client;
+            _userInfoEndPoint = userInfoEndPoint;
         }
 
-        public Task<object> GetValueAsync()
+        public async  Task<object> GetValueAsync()
         {
             // Get the token from the header
             if(_request.Headers.ContainsKey(AUTH_HEADER_NAME) && 
@@ -56,7 +64,13 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
                 // Validate the token
                 var handler = new JwtSecurityTokenHandler();
                 var result = handler.ValidateToken(token, tokenParams, out var securityToken);
-                return Task.FromResult<object>(result);
+
+                // Augment with claims from UserInfo endpoint
+                var userInfo = await _client.GetUserInfoAsync(new UserInfoRequest {Address = _userInfoEndPoint, Token = token});
+                if (!(result.Identity is ClaimsIdentity identity)) return result;
+                var identity2 = new ClaimsIdentity(identity, userInfo.Claims);
+                var principal = new ClaimsPrincipal(identity2);
+                return principal;
             }
             else
             {

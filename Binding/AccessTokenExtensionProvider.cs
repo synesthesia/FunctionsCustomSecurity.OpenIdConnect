@@ -17,6 +17,7 @@ namespace FunctionsCustomSecurity.OpenIdConnect.Binding
             {
                 throw new ArgumentNullException("Issuer", "Must define token issuer url in settings");
             }
+
             _client = _client ?? new HttpClient{BaseAddress = new Uri(issuer) };
 
             // Creates a rule that links the attribute to the binding
